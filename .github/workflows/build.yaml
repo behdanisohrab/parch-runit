@@ -1,5 +1,5 @@
 # GHW workflow to build metislinux iso 
-name: build metis iso per release
+name: build parch iso per release
 on:
   push:
 
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: artixlinux/runit:latest
+      image: artixlinux/artixlinux:base-runit
       options: --privileged
 
     steps:
@@ -38,7 +38,7 @@ jobs:
           mkdir ~/.config/artools -p
           
           cp config/pacman.conf /usr/share/artools/pacman.conf.d/default.conf
-          cp -r config/me* /etc/pacman.d/
+          cp -r config/parch-mirrors /etc/pacman.d/
 
           ./build-iso.sh 
           #buildiso -q -i runit
@@ -55,7 +55,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.ISO_PATH }}
-          asset_name: metis-linux-runit-${{ env.NOW }}-x86_64.iso
-          tag: MetisLinux-${{ env.NOW }}
+          asset_name: parch-linux-runit-${{ env.NOW }}-x86_64.iso
+          tag: ParchLinux-${{ env.NOW }}
           overwrite: true 
-          body: This is the release of Metis Linux ISO on ${{ env.NOW }}
+          body: This is the release of Parch Linux ISO on ${{ env.NOW }}
